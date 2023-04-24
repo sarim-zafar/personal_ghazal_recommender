@@ -113,7 +113,7 @@ def filter_choices(choices):
     return choices
 
 def get_recommendation(emb):
-    print(st.session_state.choices)
+    # print(st.session_state.choices)
     y = np.zeros(len(emb))
     for i in st.session_state.choices["Thumbs Up"]:
         y[i] = 1
@@ -127,7 +127,7 @@ def get_recommendation(emb):
     sorted_ix=filter_choices(sorted_ix)
     normalized_distance = np.abs(similarities[sorted_ix[0]]) / np.max(np.abs(similarities))
     certainty_score = int((1 - normalized_distance) * 100)
-    print(certainty_score,sorted_ix[0])
+    # print(certainty_score,sorted_ix[0])
     # proba=clf.predict_proba(emb[sorted_ix[1]].reshape(1, -1))
     return certainty_score,sorted_ix[0],
 
@@ -140,7 +140,7 @@ def get_ghazal(df,emb,title_placeholder,author_placeholder,
         st.session_state.idx=np.random.choice(choices,size=1)[0]
         st.session_state.proba=0
     else:
-        print('yay ml engaged!!!')
+        # print('yay ml engaged!!!')
         st.session_state.proba,st.session_state.idx=get_recommendation(emb)
     st.session_state.title=df.iloc[st.session_state.idx].title.strip()
     st.session_state.author=df.iloc[st.session_state.idx].author.strip()
