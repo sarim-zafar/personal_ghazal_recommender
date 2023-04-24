@@ -27,7 +27,7 @@ def load_data():
 
 def set_page_config():
     st.set_page_config(
-        page_title="Personalized Ghazal Recommender",
+        page_title="شخصیات بندی شدہ غزل کی تجویز کنندہ",
         # layout="centered",
         initial_sidebar_state="collapsed",
     )
