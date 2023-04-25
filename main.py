@@ -37,7 +37,13 @@ def set_custom_css():
     st.markdown(
         """
         <style>
+       @font-face {
+                font-family: 'Noto Nastaleeq Urdu';
+                src: 'fonts/NotoNastaliqUrdu-VariableFont_wght.ttf';
+                }
+
         body {
+            font-family: 'Noto Nastaleeq Urdu';
             background-color: #000000;
             color: #FFFFFF;
         }
@@ -119,7 +125,7 @@ def get_recommendation(emb):
         y[i] = 1
     clf = svm.LinearSVC(class_weight='balanced',
                         verbose=False,
-                        max_iter=10_000, tol=1e-6, C=0.1,random_state=8)
+                        max_iter=10_000, tol=1e-6, C=1.0,random_state=8)
     clf.fit(emb, y) # train
     # infer on whatever data you wish, e.g. the original data
     similarities = clf.decision_function(emb)
