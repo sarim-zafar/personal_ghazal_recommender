@@ -21,7 +21,7 @@ def decrypt_data():
 @st.cache_data
 def load_data():
     decrypt_data()
-    df = pd.read_parquet("data/data.parquet")
+    df = pd.read_parquet("data.parquet")
     emb=np.array(df['embedding'].to_list())
     return df,emb
 
