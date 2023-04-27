@@ -32,8 +32,6 @@ def set_page_config():
         initial_sidebar_state="collapsed",
         layout="wide",
         menu_items={
-        'Get Help': 'https://twitter.com/1Sarim',
-        'Report a bug': 'https://twitter.com/1Sarim',
         'About': """
                 Every time you open the app it will start by giving
                 recommendation’s randomly but if you give it feedback at the bottom
