@@ -135,7 +135,7 @@ def get_recommendation(emb):
         y[i] = 1
     clf = svm.LinearSVC(class_weight='balanced',
                         verbose=False,
-                        max_iter=10_000, tol=1e-6, C=0.5,random_state=8)
+                        max_iter=10_000, tol=1e-6, C=0.1,random_state=8)
     clf.fit(emb, y) # train
     # infer on whatever data you wish, e.g. the original data
     similarities = clf.decision_function(emb)
