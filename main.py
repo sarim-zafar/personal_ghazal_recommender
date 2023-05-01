@@ -143,10 +143,10 @@ def train_one(X,i,C):
 def train_exemplar_svm(X,pos_examples, C=0.25):
     exemplar_svms = []
     for i in pos_examples:
-        print("training exemplar svm for ",i)
+        # print("training exemplar svm for ",i)
         clf=train_one(X,i,C)
         exemplar_svms.append(clf)
-    print("trained ",len(exemplar_svms),"exemplar svms")
+    # print("trained ",len(exemplar_svms),"exemplar svms")
     return exemplar_svms
 
 def normalize_decision_values(decision_values):
@@ -173,9 +173,9 @@ def get_prediction(_exemplar_svms,X):
         # Add the best match and its confidence to the top_preds list
         top_preds.append([best_match, best_match_confidence])
 
-    print(top_preds)
+    # print(top_preds)
     top_pred,conf=get_most_conf(top_preds)
-    print(top_pred,conf)
+    # print(top_pred,conf)
     return top_pred, conf
 
 def get_recommendation(emb):
