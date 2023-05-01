@@ -128,24 +128,62 @@ def filter_choices(choices):
             choices.remove(i)
     return choices
 
-def get_recommendation(emb):
-    # print(st.session_state.choices)
-    y = np.zeros(len(emb))
-    for i in st.session_state.choices["Thumbs Up"]:
-        y[i] = 1
+# Create an Exemplar SVM training function
+@st.cache_data
+def train_one(X,i,C):
+    y = np.zeros(len(X))
+    y[i] = 1
     clf = svm.LinearSVC(class_weight='balanced',
-                        verbose=False,
-                        max_iter=10_000, tol=1e-6, C=0.1,random_state=8)
-    clf.fit(emb, y) # train
+                    verbose=False,
+                    max_iter=10_000, tol=1e-6, C=C,random_state=8)
+    clf.fit(X, y)
+    return clf
+
+# @st.cache_data
+def train_exemplar_svm(X,pos_examples, C=0.25):
+    exemplar_svms = []
+    for i in pos_examples:
+        print("training exemplar svm for ",i)
+        clf=train_one(X,i,C)
+        exemplar_svms.append(clf)
+    print("trained ",len(exemplar_svms),"exemplar svms")
+    return exemplar_svms
+
+def normalize_decision_values(decision_values):
+    decision_values -= np.max(decision_values)
+    return np.exp(decision_values) / np.sum(np.exp(decision_values))
+
+def get_most_conf(top_preds):
+    max_idx, max_score = max(top_preds, key=lambda x: x[1])
+    return [max_idx,max_score*100]
+
+def get_prediction(_exemplar_svms,X):
+    top_preds=[]
+    for svm in _exemplar_svms:
+        certainty_scores = normalize_decision_values(svm.decision_function(X))
+        sorted_ix = np.argsort(certainty_scores)[::-1].tolist()
+
+        # Filter out already chosen items
+        sorted_ix = filter_choices(sorted_ix)
+
+        # Get the best match (highest confidence) for the current SVM
+        best_match = sorted_ix[0]
+        best_match_confidence = certainty_scores[best_match]
+
+        # Add the best match and its confidence to the top_preds list
+        top_preds.append([best_match, best_match_confidence])
+
+    print(top_preds)
+    top_pred,conf=get_most_conf(top_preds)
+    print(top_pred,conf)
+    return top_pred, conf
+
+def get_recommendation(emb):
+    clfs=train_exemplar_svm(emb,st.session_state.choices["Thumbs Up"]) # train
     # infer on whatever data you wish, e.g. the original data
-    similarities = clf.decision_function(emb)
-    sorted_ix = np.argsort(-similarities).tolist()
-    sorted_ix=filter_choices(sorted_ix)
-    normalized_distance = np.abs(similarities[sorted_ix[0]]) / np.max(np.abs(similarities))
-    certainty_score = int((1 - normalized_distance) * 100)
-    # print(certainty_score,sorted_ix[0])
-    # proba=clf.predict_proba(emb[sorted_ix[1]].reshape(1, -1))
-    return certainty_score,sorted_ix[0],
+    sorted_ix,certainty_score=get_prediction(clfs,emb)
+    # print(sorted_ix,certainty_score)
+    return certainty_score,sorted_ix,
 
 def get_ghazal(df,emb,title_placeholder,author_placeholder,
                    sep_1_placeholder,text_placeholder):
