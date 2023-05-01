@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn import svm
 import pyzipper
+from sklearn.preprocessing import PowerTransformer
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -23,6 +24,8 @@ def load_data():
     decrypt_data()
     df = pd.read_parquet("data.parquet")
     emb=np.array(df['embedding'].to_list())
+    emb=PowerTransformer().fit_transform(emb)
+
     return df,emb
 
 def set_page_config():
