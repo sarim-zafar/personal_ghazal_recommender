@@ -25,6 +25,7 @@ def load_data():
     df = pd.read_parquet("data.parquet")
     emb=np.array(df['embedding'].to_list())
     emb=PowerTransformer().fit_transform(emb)
+    emb=emb.astype(np.float32)
 
     return df,emb
 
