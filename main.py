@@ -51,22 +51,23 @@ def set_custom_css():
     st.markdown(
         """
         <style>
+       @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap'); 
        @font-face {
                 font-family: 'Noto Nastaleeq Urdu';
                 src: 'fonts/NotoNastaliqUrdu-VariableFont_wght.ttf';
                 }
 
-        body {
-            font-family: 'Noto Nastaleeq Urdu';
-            background-color: #000000;
-            color: #FFFFFF;
-        }
+        
         .urdu_text{
                     font-family: 'Noto Nastaleeq Urdu';
                     text-align: right;
                     line-height: 2.5;
                   }
-        
+        .eng_text{
+                    font-family: 'Roboto', sans-serif; 
+                    text-align: right;
+                    line-height: 2.5;
+                  }
         </style>
         """,
         unsafe_allow_html=True,
@@ -108,7 +109,10 @@ def display_recommendations(title_placeholder,author_placeholder,
     author_placeholder.markdown(f'<h5 class="urdu_text">{st.session_state.author}</h5>',
                                  unsafe_allow_html=True)
     sep_1_placeholder.write('---')
-    text_placeholder.markdown(f'<h5 class="urdu_text">{st.session_state.ghazal}</h5>',
+    txt_col1,txt_col2=text_placeholder.columns(2)
+    txt_col1.markdown(f'<h5 class="eng_text">{st.session_state.ghazal_eng}</h5>',
+                                 unsafe_allow_html=True)
+    txt_col2.markdown(f'<h5 class="urdu_text">{st.session_state.ghazal}</h5>',
                                  unsafe_allow_html=True)
     
 
@@ -203,6 +207,8 @@ def get_ghazal(df,emb,title_placeholder,author_placeholder,
     st.session_state.title=df.iloc[st.session_state.idx].title.strip()
     st.session_state.author=df.iloc[st.session_state.idx].author.strip()
     st.session_state.ghazal=df.iloc[st.session_state.idx].text.replace('\n','<br>').strip()
+    st.session_state.ghazal_eng=df.iloc[st.session_state.idx].eng_text.replace('\n','<br>').strip()
+    
     #display the ghazal
     display_recommendations(title_placeholder,author_placeholder,
                    sep_1_placeholder,text_placeholder)
