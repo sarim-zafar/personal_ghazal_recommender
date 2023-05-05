@@ -65,7 +65,7 @@ def set_custom_css():
                   }
         .eng_text{
                     font-family: 'Roboto', sans-serif; 
-                    text-align: right;
+                    text-align: left;
                     line-height: 2.5;
                   }
         </style>
