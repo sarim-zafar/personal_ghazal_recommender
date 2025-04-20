@@ -51,9 +51,9 @@ def load_data():
         # Try loading directly first
         df = pd.read_parquet(parquet_file)
     except FileNotFoundError:
-        st.warning(f"'{parquet_file}' not found. Attempting to decrypt 'data/data.zip'...")
+        # st.warning(f"'{parquet_file}' not found. Attempting to decrypt 'data/data.zip'...")
         if decrypt_data():
-            st.success("Data decrypted successfully. Loading data...")
+            # st.success("Data decrypted successfully. Loading data...")
             try:
                 df = pd.read_parquet(parquet_file)
             except FileNotFoundError:
