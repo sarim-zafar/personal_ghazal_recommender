@@ -129,14 +129,14 @@ def set_custom_css():
             font-family: 'Noto Nastaliq Urdu', serif !important;
             direction: rtl;
             text-align: right;
-            line-height: 2.5;
+            line-height: 2.25 !important;
         }
 
         /* Specific style for English text */
         .eng_text {
             font-family: 'Roboto', sans-serif !important;
             text-align: left;
-            line-height: 2.5;
+            line-height: 2.25 !important;
         }
 
         /* Ensure markdown headers using the class get the font */
@@ -145,15 +145,6 @@ def set_custom_css():
         }
          h1.eng_text, h2.eng_text, h3.eng_text, h4.eng_text, h5.eng_text, h6.eng_text {
              font-family: 'Roboto', sans-serif !important;
-        }
-
-        /* Target the button element itself within Streamlit's structure */
-        /* This applies the font to ALL text inside the button */
-        div[data-testid="stButton"] > button {
-            font-family: 'Noto Nastaliq Urdu', 'Roboto', sans-serif !important; /* Prioritize Nastaliq, fallback */
-             /* Adjust padding or other properties if needed for Nastaliq */
-             padding-top: 0.25rem;
-             padding-bottom: 0.35rem; /* Slight adjustment might be needed */
         }
 
         /* Style for the author name below the progress bar */
@@ -221,9 +212,9 @@ def display_recommendations(title_placeholder, sep_1_placeholder, text_placehold
     txt_col1, txt_col2 = text_placeholder.columns(2)
 
     # Apply classes for specific font styling
-    txt_col1.markdown(f'<div class="eng_text">{ghazal_eng}</div>',
+    txt_col1.markdown(f'<h5 class="eng_text">{ghazal_eng}</h5>',
                                  unsafe_allow_html=True)
-    txt_col2.markdown(f'<div class="urdu_text">{ghazal}</div>',
+    txt_col2.markdown(f'<h5 class="urdu_text">{ghazal}</h5>',
                                  unsafe_allow_html=True)
 
 
