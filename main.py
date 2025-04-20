@@ -66,9 +66,9 @@ def load_data():
         emb = emb.astype(np.float32)
         return df, emb
     except FileNotFoundError:
-        st.error("Error: 'data.parquet' not found. Decryption might have failed or the file is missing.")
+        # st.error("Error: 'data.parquet' not found. Decryption might have failed or the file is missing.")
         # Attempt decryption here if file not found initially
-        st.warning("Attempting to decrypt data file...")
+        # st.warning("Attempting to decrypt data file...")
         if decrypt_data():
             try:
                 df = pd.read_parquet("data.parquet")
@@ -80,13 +80,13 @@ def load_data():
                 pt = PowerTransformer()
                 emb = pt.fit_transform(emb)
                 emb = emb.astype(np.float32)
-                st.success("Data decrypted and loaded successfully.")
+                # st.success("Data decrypted and loaded successfully.")
                 return df, emb
             except Exception as e:
-                st.error(f"Error loading data after decryption: {e}")
+                # st.error(f"Error loading data after decryption: {e}")
                 st.stop()
         else:
-            st.error("Decryption failed. Cannot load data.")
+            # st.error("Decryption failed. Cannot load data.")
             st.stop()
 
     except Exception as e:
